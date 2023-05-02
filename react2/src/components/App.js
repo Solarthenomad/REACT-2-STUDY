@@ -6,6 +6,9 @@ import CookieSave from './R085_cookieSave';
 import {Route} from 'react-router-dom';
 import reactRouter from './R089_reactRouter'
 import reactRouter2 from './reactRouter2';
+import reactDebounce from './R094_reactDebounce';
+import reactThrottle from './R095_reactThrottle';
+import floatingPopulationList from "./Floating_population/floatingPopulationList";
 
 //css
 import '../css/new.css';
@@ -35,6 +38,10 @@ class App extends Component {
         <StrAddButton AppProp="200"/>
         <Route exact path = '/' component={reactRouter}/>
         <Route  exact path = '/reactRouter2' component= {reactRouter2}/>
+        <Route exact path = '/' component={LoginForm}/>
+        <Route exact path = '/Debounce' component={reactDebounce}/>
+        <Route exact path='./Throttle' component= {reactThrottle}/>
+        <Route path='/floatPopulationList' component={floatingPopulationList}/>
         <Footer />
       </div>
       
