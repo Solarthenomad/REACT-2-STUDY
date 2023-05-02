@@ -12,9 +12,18 @@ class R087_cookieRemove extends Component{
             //httpOnly : true
         });
         setTimeout(function() {
-            cookie.remove('userid', {
-                
-            })
-        })
+            cookie.remove('userid', {path : '/'});
+        }, 1000);
+        setTimeout (function() {
+            alert(cookie.load('userid'))
+        }, 2000);
+    }
+
+    render() {
+        return (
+            <><h3>react-cookies Remove</h3></>
+        )
     }
 }
+
+export default R087_cookieRemove;

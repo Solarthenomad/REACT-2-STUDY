@@ -1,13 +1,15 @@
 import React from "react";
-import { ReactDOM } from "react";
+import { ReactDOM } from "react-dom";
 import './index.css';
-import App from './App';
+import App from './components/App';
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import reudcers from './reducers';
 import {applyMiddleware} from 'redux';
+import {BrouserRouter} from 'react-router-dom';
+import * as serviceWorker from './serviceWorker';
 
-const CallMiddleware = store => nextMiddle => action => {
+/*const CallMiddleware = store => nextMiddle => action => {
   console.log('1. reducer 실행 전');
   console.log('2. action.type : ' + action.type+', store str: ' + store.getState().data.str);
   let result = nextMiddle(action);
@@ -30,4 +32,10 @@ const listener =() =>{
 };
 
 store.subscribe(listener);
-listener();
+listener(); */
+
+ReactDOM.render((
+  <BrowserRouter>
+      <App />
+  </BrowserRouter>
+), document.getElementById('root'));
