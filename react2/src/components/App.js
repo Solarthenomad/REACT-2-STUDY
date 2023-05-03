@@ -9,6 +9,7 @@ import reactRouter2 from './reactRouter2';
 import reactDebounce from './R094_reactDebounce';
 import reactThrottle from './R095_reactThrottle';
 import floatingPopulationList from "./Floating_population/floatingPopulationList";
+import reactsSimpleLineChart from './Floating_population/rechartsSimpleLineChart';
 
 //css
 import '../css/new.css';
@@ -42,6 +43,7 @@ class App extends Component {
         <Route exact path = '/Debounce' component={reactDebounce}/>
         <Route exact path='./Throttle' component= {reactThrottle}/>
         <Route path='/floatPopulationList' component={floatingPopulationList}/>
+        <Route path ='/rechartsSimpleLineChart' component={reactsSimpleLineChart}/>
         <Footer />
       </div>
       
