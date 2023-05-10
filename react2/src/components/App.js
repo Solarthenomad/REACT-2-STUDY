@@ -3,7 +3,7 @@ import { Component } from "react";
 import {Connect} from 'react-redux;'
 import StrAddButton from "../StrAddButton";
 import CookieSave from './R085_cookieSave';
-import {Route} from 'react-router-dom';vcbh
+import {Route} from 'react-router-dom';
 import reactRouter from './R089_reactRouter'
 import reactRouter2 from './reactRouter2';
 import reactDebounce from './R094_reactDebounce';
@@ -11,6 +11,7 @@ import reactThrottle from './R095_reactThrottle';
 import floatingPopulationList from "./Floating_population/floatingPopulazzzzxationList";
 import reactsSimpleLineChart from './Floating_population/rechartsSimpleLineChart';
 import floatingPopulationListChart from './Floating_population/floatingPopulationListChart';
+import reactProxy from './R109_reactProxy';
 
 //css
 import '../css/new.css';
@@ -46,6 +47,7 @@ class App extends Component {
         <Route path='/floatPopulationList' component={floatingPopulationList}/>
         <Route path ='/rechartsSimpleLineChart' component={reactsSimpleLineChart}/>
         <Route path = '/floatingPopulationListChart' component= {floatingPopulationListChart} />
+        <Route exact path = '/reactProxy' component = {reactProxy} />
         <Footer />
       </div>
       
