@@ -3,6 +3,7 @@ import ExpenseItem from './ExprenseItem';
 import React from 'react';
 import ExpenseFilter from './ExpenseFilter';
 import { useState } from 'react';
+import ExpensesChart from './ExpensesChart';
 import ExpensesList from './ExpensesList';
 
 const Expenses = (props) => {
@@ -41,7 +42,8 @@ const Expenses = (props) => {
     <ExpenseFilter selected={filteredYear}onChangeFilter={filterChangeHanlder} />
     {/* {expensesContent} */}
     {/* expensesContent 대신 이것을 컴포넌트화시킨 expensesList 출력 */}
-    <ExpensesList />
+    <ExpensesChart expenses={filteredExepnses}/>
+    <ExpensesList items={filteredExepnses} />
     {filteredExepnses.length ===0 && <p>No expenses found.</p>}
 
     {filteredExpenses.length ===0 ? (<p>No expensess found.</p>) : (
