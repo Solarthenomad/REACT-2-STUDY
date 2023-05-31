@@ -14,6 +14,22 @@ const Expenses = (props) => {
     console.log(selectedYear);
     setfilteredYear(selectedYear);
 
+  };
+
+  const filteredExepnses = props.items.filter(expense => {
+    return expense.date.getFullYear().toString() === filteredYear;
+  });
+
+  let expensesContent = <p>No expenses found.</p>
+  if (filteredExpenses.length >0) {
+    expensesContent.filteredExepnses.map((expense) => {
+      <ExpenseItem
+        key = {expense.id}
+        title = {expense.title}
+        amount = {expense.amount}
+        date = {expense.date}
+      />
+    })
   }
 
   return (
@@ -22,6 +38,29 @@ const Expenses = (props) => {
     
     <Card className="expenses">
     <ExpenseFilter selected={filteredYear}onChangeFilter={filterChangeHanlder} />
+    {expensesContent}
+    {filteredExepnses.length ===0 && <p>No expenses found.</p>}
+
+    {filteredExpenses.length ===0 ? (<p>No expensess found.</p>) : (
+      filteredExpenses.map((expense) => (
+        <ExpenseItem 
+           key = {expense.id}
+           title = {expense.title}
+           amount = {expense.amount}
+           date= {expense.date} />
+      ))
+    )}
+    {/* 이렇게 mapping 한 게 아래의 ExpenseItem이랑 똑같은 거임 */}
+    {props.items.map((expense, index) => (<ExpenseItem
+    // 모든 아이템은 고유한 id(index)를 가져야함
+     key = {expense.id}
+     title = {expense.title}
+     amount = {expense.amount} 
+     date = {expense.date}/>
+    ))}
+    
+    {/* map 메서드 : 다른배열로부터 새로운 배열을 생성하는데  원래 배열에 있는 모든 것들을 변환한다. */}
+    {/* 사용 예시 const map1 = array1.map(x => x*2); */}
     {/* selected로 전달된 값은 expensefilter로 전달되고  expensefilter로 전달되고 드롭다운으로 사용된다. */}
       <ExpenseItem
         title={props.items[0].title}
