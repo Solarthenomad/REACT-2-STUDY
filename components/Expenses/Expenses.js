@@ -3,6 +3,7 @@ import ExpenseItem from './ExprenseItem';
 import React from 'react';
 import ExpenseFilter from './ExpenseFilter';
 import { useState } from 'react';
+import ExpensesList from './ExpensesList';
 
 const Expenses = (props) => {
 
@@ -22,7 +23,7 @@ const Expenses = (props) => {
 
   let expensesContent = <p>No expenses found.</p>
   if (filteredExpenses.length >0) {
-    expensesContent.filteredExepnses.map((expense) => {
+    expensesContent=filteredExepnses.map((expense) => {
       <ExpenseItem
         key = {expense.id}
         title = {expense.title}
@@ -38,7 +39,9 @@ const Expenses = (props) => {
     
     <Card className="expenses">
     <ExpenseFilter selected={filteredYear}onChangeFilter={filterChangeHanlder} />
-    {expensesContent}
+    {/* {expensesContent} */}
+    {/* expensesContent 대신 이것을 컴포넌트화시킨 expensesList 출력 */}
+    <ExpensesList />
     {filteredExepnses.length ===0 && <p>No expenses found.</p>}
 
     {filteredExpenses.length ===0 ? (<p>No expensess found.</p>) : (
