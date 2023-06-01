@@ -9,15 +9,23 @@ const AddUser = props =>{
     const [enteredUsername, setEnteredUsername] = useState('');
 
     const [enteredAge, setEnteredAge] =useState('');
+    const [error, setError] = useState();
 
     const addUserHandler =(event) =>{
         event.preventDefault();
         
         //trim() : 앞 뒤 공백 제거(유효성 검사)
         if(enteredUsername.trim().length ===0 || enteredAge.trim().length ===0) {
+            setError({
+                title : 'Invalid input',
+                message : 'Please enter a valid name and age'
+            })
             return ;
         }
         if(+enteredAge < 1) {
+            setError({
+                title : 'Invalid input',
+                message : 'Please enter a valid name and age'});
             return ;
         }
         //초기화 로직
@@ -36,9 +44,13 @@ const AddUser = props =>{
         setEnteredAge(event.target.value);
     }
 
+    const errorHandler =() =>{
+        setError(null);
+    }
+
    return(
-    <div><ErrorModal title="An error occured!" message="Something went wrong!" 
-    />
+    <div>{error && <ErrorModal title={error.title} message={error.message }
+    onConfirm={errorHandler}/>}
     <Card className={classes.input}>
            <form onSubmit={addUserHandler}>
                <label htmlFor="username">Username</label>
