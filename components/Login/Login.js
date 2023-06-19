@@ -1,76 +1,111 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 
 import Card from '../UI/Card/Card';
 import classes from './Login.module.css';
 import Button from '../UI/Button/Button';
-// 전 강의에서 useEffect() 종속성에 대해 살펴보았습니다.
 
-// effect 함수에서 사용하는 "모든 것"을 종속성으로 추가해야 함을 배웠습니다. 즉, 거기에서 사용하는 모든 상태 변수와 함수를 포함합니다.
+// const [state, dispatchFn] = useReducer(reducerFn, initialState, initFn);
 
-// 맞는 말이지만 몇 가지 예외가 있습니다. 다음 사항을 알고 있어야 합니다.
+//reducer 함수는 컴포넌트 함수 밖에서 작성된다. 굳이 안의 데이터를 사용하지 ㅇ낳기 때문 
+const emailReducer = (state, action)=>{
+    if (action.type === 'USER_INPUT'){
+        return {value : action.val, isValid: action.val.includes('@')}
+    }
+    if(action.type ==='INPUT_BLUR'){
+        return {value :state.value , isValid:state.valid.includes('@')}
 
-// 여러분은 상태 업데이트 기능을 추가할 필요가 없습니다. (지난 강의에서 했던 것처럼 setFormIsValid 사용): React는 해당 함수가 절대 변경되지 않도록 보장하므로 종속성으로 추가할 필요가 없습니다.
+    }
+    return {value : '', isValid : 'false'};
+};
 
-// 여러분은 또한 "내장" API 또는 함수를 추가할 필요가 없습니다 fetch(), 나 localStorage 같은 것들 말이죠 (브라우저에 내장된 함수 및 기능, 따라서 전역적으로 사용 가능): 이러한 브라우저 API/전역 기능은 React 구성 요소 렌더링 주기와 관련이 없으며 변경되지 않습니다.
+const passwordReducer = (state, action)=>{
+    if (action.type === 'USER_INPUT'){
+        return {value : action.val, isValid: action.val.includes('@')}
+    }
+    if(action.type ==='INPUT_BLUR'){
+        return {value :state.value , isValid:state.valid.includes('@')}
 
-// 여러분은 또한 변수나 함수를 추가할 필요가 없습니다. 아마도 구성 요소 외부에서 정의했을 겁니다 (예: 별도의 파일에 새 도우미 함수를 만드는 경우): 이러한 함수 또는 변수도 구성 요소 함수 내부에서 생성되지 않으므로 변경해도 구성 요소에 영향을 주지 않습니다 (해당 변수가 변경되는 경우, 또는 그 반대의 경우에도 구성 요소는 재평가되지 않습니다)
-
-// 간단히 말해서: effect 함수에서 사용하는 모든 "것들"을 추가해야 합니다. 구성 요소(또는 일부 상위 구성 요소)가 다시 렌더링 되어 이러한 "것들"이 변경될 수 있는 경우.그렇기 때문에 컴포넌트 함수에 정의된 변수나 상태, 컴포넌트 함수에 정의된 props 또는 함수는 종속성으로 추가되어야 합니다!
-
-
+    }
+    return {value : '', isValid : 'false'};
+}
 
 
 const Login = (props) => {
-  const [enteredEmail, setEnteredEmail] = useState('');
-  const [emailIsValid, setEmailIsValid] = useState();
+//   const [enteredEmail, setEnteredEmail] = useState('');
+//   const [emailIsValid, setEmailIsValid] = useState();
   const [enteredPassword, setEnteredPassword] = useState('');
   const [passwordIsValid, setPasswordIsValid] = useState();
   const [formIsValid, setFormIsValid] = useState(false);
   
-  useEffect(()=>{
+  const [emailState, dispatchEmail] = useReducer(emailReducer, {
+    value : '',
+    isValid:null,
+  });
 
-    console.log('Checking form validity');
-    setTimeout(()=>{
-        setFormIsValid(
-            enteredEmail.includes('@')&& enteredPassword.trim().length >6
-        );
+  const [passwrodState, dispatchPassword] = useReducer(passwordReducer,{
+    value:'',
+    isValid: null,
+  });
 
-    },500);
+const {isValid : emailIsValid } = emailState;
+const {isValid : passwordIsValid } = passwrodState;
 
-    return()=>{
-        console.log('CLEANUP');
-        clearTimeout(identifier);
-    };  //클린업 함수라고 함
-   
-  }, [setFormIsValid, enteredEmail, enteredPassword]);
+useEffect(()=>{
+  const identifier = setTimeout(()=>{
+    console.log('Checking form validity!');
+    setFormIsValid(emailState.isValid && passwrodState.isValid);
+  } , 500);
+
+  return () =>{
+    console.log('CLEANUP');
+    clearTimeout(identifier);
+  };
+}, [emailIsValid, passwordIsValid]);
+
+  // useEffect(() => {
+  //   const identifier = setTimeout(() => {
+  //     console.log('Checking form validity!');
+  //     setFormIsValid(
+  //       enteredEmail.includes('@') && enteredPassword.trim().length > 6
+  //     );
+  //   }, 500);
+
+  //   return () => {
+  //     console.log('CLEANUP');
+  //     clearTimeout(identifier);
+  //   };
+  // }, [enteredEmail, enteredPassword]);
 
   const emailChangeHandler = (event) => {
-    setEnteredEmail(event.target.value);
+   dispatchEmail({type : 'USER_INPUT', val : event.target.value});
 
     setFormIsValid(
-      event.target.value.includes('@') && enteredPassword.trim().length > 6
+      event.target.value.includes('@') && passwrodState.isValid
     );
   };
 
   const passwordChangeHandler = (event) => {
-    setEnteredPassword(event.target.value);
-
+    dispatchPassword({type : 'USER_INPUT', val : event.target.value})
     setFormIsValid(
-      event.target.value.trim().length > 6 && enteredEmail.includes('@')
+      emailState.isValid && event.target.value.trim().length >6
     );
   };
 
   const validateEmailHandler = () => {
-    setEmailIsValid(enteredEmail.includes('@'));
+    // setEmailIsValid(emailState.isValid);
+    dispatchEmail({type : 'INPUT_BLUR'});
   };
 
   const validatePasswordHandler = () => {
-    setPasswordIsValid(enteredPassword.trim().length > 6);
-  };
+    // setPasswordIsValid(enteredPassword.trim().length > 6);
+    dispatchPassword({
+      type : 'INPUT_BLUR'
+    });
 
   const submitHandler = (event) => {
     event.preventDefault();
-    props.onLogin(enteredEmail, enteredPassword);
+    // props.onLogin(emailState.value, enteredPassword);
+    props.onLogin(emailState.value, passwrodState.value);
   };
 
   return (
@@ -78,14 +113,14 @@ const Login = (props) => {
       <form onSubmit={submitHandler}>
         <div
           className={`${classes.control} ${
-            emailIsValid === false ? classes.invalid : ''
+            emailState.IsValid === false ? classes.invalid : ''
           }`}
         >
           <label htmlFor="email">E-Mail</label>
           <input
             type="email"
             id="email"
-            value={enteredEmail}
+            value={emailState.value}
             onChange={emailChangeHandler}
             onBlur={validateEmailHandler}
           />
@@ -99,7 +134,7 @@ const Login = (props) => {
           <input
             type="password"
             id="password"
-            value={enteredPassword}
+            value={passwrodState.value}
             onChange={passwordChangeHandler}
             onBlur={validatePasswordHandler}
           />
@@ -115,3 +150,31 @@ const Login = (props) => {
 };
 
 export default Login;
+
+// 중첩 속성을 useEffect에 종속성으로 추가하기
+// 이전 강의에서 우리는 useEffect()에 객체 속성을 종속성으로 추가하기 위해 dstructuring을 사용했습니다.
+
+// const { someProperty } = someObject;
+// useEffect(() => {
+//   // code that only uses someProperty ...
+// }, [someProperty]);
+// 이것은 매우 일반적인 패턴 및 접근 방식이며, 이것이 제가 일반적으로 이 방식을 사용하는 이유이며 여기서 보여드리는 이유입니다(코스 내내 계속 사용할 것입니다).
+
+// 핵심은 우리가 destructuring을 사용한다는 것이 아니라, 전체 개체 대신 특정 속성을 종속성으로 전달한다는 것입니다.
+
+// 우리는 이와 같이 코드를 작성할 수도 있으며 같은 방식으로 작동합니다.
+
+// useEffect(() => {
+//   // code that only uses someProperty ...
+// }, [someObject.someProperty]);
+// 이것은 잘 작동합니다!
+
+// 하지만 여러분은 이 코드 사용을 피해야 합니다:
+
+// useEffect(() => {
+//   // code that only uses someProperty ...
+// }, [someObject]);
+// 왜 그럴까요?
+
+// 왜냐하면 effect 함수는 someObject 가 변경될 때마다 재실행되기 때문이죠 - 단일 속성이 아닙니다 (someProperty 위의 예에서)
+
