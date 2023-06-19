@@ -5,20 +5,21 @@ import AuthContext from "../../store/auth-context";
 const Navigation =(props)=>{
     return (
         <AuthContext.Consumer>
-            {(ctx) =>()}
-        <nav className = {classes.nav}>
+            {(ctx) =>{
+                return (
+                    <nav className = {classes.nav}>
             <ul>
-                {props.isloggedin &&(
+                {ctx.isloggedin &&(
                     <li>
                         <a href = "/">Users</a>
                     </li>
                 )}
-                {props.isLoggedIn&&(
+                {ctx.isLoggedIn&&(
                     <li>
                         <a href="/">Admin</a>
                     </li>
                 )}
-                {props.isLoggedIn && (
+                {ctx.isLoggedIn && (
                     <li>
                         <button onClick = {props.onLogout}>Logout</button>
                     </li>
@@ -26,6 +27,10 @@ const Navigation =(props)=>{
             </ul>
 
         </nav>
+
+                )
+            }}
+        
         </AuthContext.Consumer>
     )
 }

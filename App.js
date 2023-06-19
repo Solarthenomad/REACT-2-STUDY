@@ -30,9 +30,13 @@ function App() {
 
   return (
     <React.Fragment>
-      //AuthContext로 감싸준 친구를 공급해주는 것임 
-      <AuthContext.Provider >
-      <MainHeader isAuthenticated={isLoggedIn} onLogout={logoutHandler} />
+      {/* AuthContext로 감싸준 친구를 공급해주는 것임  */}
+      <AuthContext.Provider value={{
+        isLoggedIn : isLoggedIn,
+        //isLoggedIn이 변경될 떄마다 리액트에 의해 업데이트 되어도록함
+      }} >
+      {/* {/* <MainHeader isAuthenticated={isLoggedIn} onLogout={logoutHandler} /> */}
+      <MainHeader  onLogout ={logoutHandler}/>
       <main>
         {!isLoggedIn && <Login onLogin={loginHandler} />}
         {isLoggedIn && <Home onLogout={logoutHandler} />}
